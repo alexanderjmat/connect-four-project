@@ -34,6 +34,7 @@ function makeHtmlBoard() {
   const htmlBoard = document.querySelector('#board');
 
   // TODO: add comment for this code
+  //Create grid with HTML table
   const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
@@ -46,6 +47,7 @@ function makeHtmlBoard() {
   htmlBoard.append(top);
 
   // TODO: add comment for this code
+  //create table entries for columns
   for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
     for (let x = 0; x < WIDTH; x++) {
@@ -92,7 +94,10 @@ function endGame(msg) {
   if (msg == undefined) {
     return;
   }
-  return alert(msg);
+  const alert = confirm(msg);
+  if (alert) {
+    window.location.reload();
+  }
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -145,6 +150,9 @@ function checkForWin() {
   }
 
   // TODO: read and understand this code. Add comments to help you.
+  //Loops through every row entry per column entry 
+  //Checks different possible combinations of four consecutive pieces by one player
+
 
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
