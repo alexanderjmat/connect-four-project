@@ -8,6 +8,7 @@ body.addEventListener('click', function(e) {
 
 
 class Game {
+  //This class contains all the logic and design for a single game of connect four
     constructor(p1, p2) {
       this.players = [p1, p2]   
       this.HEIGHT = 6;
@@ -20,23 +21,24 @@ class Game {
     }
 
     makeBoard() {
+      //generates an array to represent the gameboard, where any unfilled square is given a value of null
         for (let y = 0; y < this.HEIGHT; y++) {
           this.board.push([]);
           for (let x = 0; x < this.WIDTH; x++) {
             this.board[y].push(null);
           }
         }
-        console.log(this.board)
         return this.board;
     };
 
     makeHtmlBoard() {
+      //generates an html table to visually represent the gameboard.
         const board = document.getElementById('board');
         // make column tops (clickable area for adding a piece to that column)
         const top = document.createElement('tr');
         top.setAttribute('id', 'column-top');
         top.addEventListener('click', this.handleClick.bind(this));
-      
+        //this loop generates the head of the board where the user can click
         for (let x = 0; x < this.WIDTH; x++) {
           const headCell = document.createElement('td');
           headCell.setAttribute('id', x);
@@ -45,7 +47,7 @@ class Game {
       
         board.append(top);
       
-        // make main part of board
+        //this loop generates the body of the board where the pieces will go
         for (let y = 0; y < this.HEIGHT; y++) {
           const row = document.createElement('tr');
       
@@ -60,9 +62,10 @@ class Game {
     }
 
     placeInTable(y, x) {
+      //updates the html table to inherit class names representing the player who made a move and... 
+      //...fill the HTML board with a visual representation of the piece
         const piece = document.createElement('div');
         piece.classList.add('piece');
-        // console.log(this.players[0], this.players[1]);
         if (this.currPlayer == this.players[0]) {
             piece.classList.add(`p1`)
         }
@@ -71,21 +74,21 @@ class Game {
         }
         piece.style.top = -50 * (y + 2);
         piece.style.backgroundColor = this.currPlayer.color;
-        console.log('placeInTable y/x coordinates: ', [y, x]);
-        console.log('');
       
         const spot = document.getElementById(`${y}-${x}`);
         spot.append(piece);
     }
 
     endGame(msg) {
+        //generates an alert of the winning player and disables the board from being triggered by any mouse events
         alert(msg);
         document.querySelector('#game').style.pointerEvents = 'none';
     }
 
     findSpotForCol(x) {
-        // console.log(x);
-        // console.log(this.board[x].indexOf(this.currPlayer))
+      //provides logic for determining the position of a new piece
+      //starting from the bottom, if a column position is empty, fill the position with a piece...
+      //...if filled, then evaluate the next position upwards
         let y = 0;
         if (this.board[0][x] !== null) {
             y = null
@@ -97,9 +100,6 @@ class Game {
                 break;
             }
         }
-        // console.log(y)
-        console.log('findSpotForCol Y value: ', y, 'current player: ', this.currPlayer, this.board);
-        console.log('');
         return y;
     }
 
@@ -125,9 +125,7 @@ class Game {
         // check for tie
         if (this.board.every(row => row.every(cell => cell))) {
           return this.endGame('Tie!');
-        }
-        // console.log(this.board);
-          
+        }          
         // switch players
         this.currPlayer == this.players[0] ? this.currPlayer = this.players[1] : this.currPlayer = this.players[0];
     }
@@ -169,21 +167,16 @@ class Game {
      
    
 
-class Player { 
+class Player {
     constructor(color) {
         this.color = color;
     }
 }
 
-// document.getElementById('start').addEventListener('click', (e) => {
-//     e.preventDefault();
-//     let p1 = new Player(document.getElementById('p1').value);
-//     let p2 = new Player(document.getElementById('p2').value);
-//     new Game(p1, p2);
-//   });
 
 const button = document.getElementById('start');
 button.addEventListener('click', function() {
+  //triggers all the necessary events for a new game of connect four when the mouse clicks
     button.remove();
     const restart = document.createElement('button')
     restart.id = 'restart';
@@ -192,20 +185,9 @@ button.addEventListener('click', function() {
     let p1 = new Player(document.getElementById('p1').value)
     let p2 = new Player(document.getElementById('p2').value)
     const game = new Game(p1, p2);
-    // console.log(game);
-    // console.log(game.currPlayer);
-    // console.log(game.players[0], game.players[1]);
-    // console.log(game.board);
-    
-    // body.addEventListener('click', function() {
-    //     console.log(game);
-        // console.log(game.currPlayer);
-    //     console.log(game.board);
-    // })
+   
 })
 
-// let p1 = new Player('green')
-// let p2 = new Player('orange')
-// let game = new Game(p1, p2);
+
 
 
